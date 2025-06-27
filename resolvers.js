@@ -11,21 +11,48 @@ export const authorLoader = new DataLoader(getAuthors);
 export const resolvers = {
   Query: {
     books: () => books,
-    book: (parent, { id }) => books.find(book => book.id === id),
+    book: (parent, { id }) => {
+      const book = books.find(book => book.id === id);
+      if (!book) {
+        throw new Error('Book not found');
+      }
+      return book;
+    },
     authors: () => authors,
-    author: (parent, { id }) => authors.find(author => author.id === id),
+    author: (parent, { id }) => {
+      const author = authors.find(author => author.id === id);
+      if (!author) {
+        throw new Error('Author not found');
+      }
+      return author;
+    },
   },
   Book: {
-    author: (book) => authorLoader.load(book.authorId),
+    author: (book, __, { authorLoader }) => authorLoader.load(book.authorId),
   },
   Author: {
     books: (author) => books.filter(book => book.authorId === author.id),
   },
   Mutation: {
-    addBook: (parent, { title, authorId }) => {
-      const newBook = { id: String(books.length + 1), title, authorId };
+    addBook: (parent, { input }) => {
+      const { title, authorId, genre } = input;
+      const newBook = {
+        id: String(books.length + 1),
+        title,
+        authorId,
+        genre
+      };
       books.push(newBook);
       return newBook;
     },
+    addAuthor: (parent, { input }) => {
+      const { name } = input;
+      const newAuthor = {
+        id: String(authors.length + 1),
+        name,
+      };
+      authors.push(newAuthor);
+      return newAuthor;
+    }
   },
 };

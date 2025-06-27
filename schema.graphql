@@ -1,23 +1,41 @@
 type Book {
-    id: ID!
-    title: String!
-    authorId: ID!
-    author: Author
-  }
+  id: ID!
+  title: String!
+  genre: BookGenre
+  author: Author
+}
 
-  type Author {
-    id: ID!
-    name: String!
-    books: [Book]
-  }
+type Author {
+  id: ID!
+  name: String!
+  books: [Book]
+}
 
-  type Query {
-    books: [Book]
-    book(id: ID!): Book
-    authors: [Author]
-    author(id: ID!): Author
-  }
+enum BookGenre {
+  FICTION
+  MYSTERY
+  FANTASY
+  ROMANCE
+}
 
-  type Mutation {
-    addBook(title: String!, authorId: ID!): Book
-  }
+type Query {
+  books: [Book]
+  book(id: ID!): Book
+  authors: [Author]
+  author(id: ID!): Author
+}
+
+input AddBookInput {
+  title: String!
+  authorId: ID!
+  genre: BookGenre
+}
+
+input AddAuthorInput {
+  name: String!
+}
+
+type Mutation {
+  addBook(input: AddBookInput!): Book
+  addAuthor(input: AddAuthorInput!): Author
+}
