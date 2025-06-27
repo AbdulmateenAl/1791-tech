@@ -1,0 +1,19 @@
+{
+  "name": "apollo-graphql-api",
+  "version": "1.0.0",
+  "description": "GraphQL API with Apollo Server",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.10.4",
+    "dataloader": "^2.2.2",
+    "graphql": "^16.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
