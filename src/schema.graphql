@@ -1,0 +1,56 @@
+# Defines the Book type, which represents a book in the library.
+type Book {
+  id: ID!
+  title: String!
+  genre: BookGenre
+  author: Author
+}
+
+# Defines the Author type, which represents an author of a book.
+type Author {
+  id: ID!
+  name: String!
+  books: [Book]
+}
+
+# Defines the BookGenre enum, which represents the genre of a book.
+enum BookGenre {
+  FICTION
+  MYSTERY
+  FANTASY
+  ROMANCE
+}
+
+# Defines the root Query type, which is the entry point for all read operations.
+type Query {
+  # Returns all books in the library.
+  books: [Book]
+  # Returns a single book by its ID.
+  book(id: ID!): Book
+  # Returns all authors in the library.
+  authors: [Author]
+  # Returns a single author by its ID.
+  author(id: ID!): Author
+}
+
+# Defines the input type for adding a new book.
+# Using input types is a best practice for mutations, as it allows for
+# better validation and organization.
+input AddBookInput {
+  title: String!
+  authorId: ID!
+  genre: BookGenre
+}
+
+# Defines the input type for adding a new author.
+input AddAuthorInput {
+  name: String!
+}
+
+# Defines the root Mutation type, which is the entry point for all write operations.
+type Mutation {
+  # Adds a new book to the library.
+  addBook(input: AddBookInput!): Book
+  # Adds a new author to the library.
+  addAuthor(input: AddAuthorInput!): Author
+}
